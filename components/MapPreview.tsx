@@ -4,7 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "leaflet/dist/leaflet.css";
 
-import { MarkerData } from "@/types";
+import {
+	MarkerData,
+	LeafletMapInstance,
+	LeafletMarkerInstance,
+	LeafletEvent,
+	LeafletModuleWithDefault,
+	FeatherIconsModuleWithDefault,
+} from "@/types";
 
 const Section = styled.section`
 	padding: 4rem 1rem;
@@ -76,14 +83,18 @@ function MapPreviewContent() {
 	useEffect(() => {
 		if (!isClient || !mapRef.current) return;
 
-		let map: any = null;
+		let map: LeafletMapInstance | null = null;
 
 		const initializeMap = async () => {
-			const L = await import("leaflet");
+			// Fix the import type assertion
+			const L = (await import(
+				"leaflet"
+			)) as unknown as LeafletModuleWithDefault;
+			const leaflet = L.default;
 
 			// Fix for default markers
-			delete (L.Icon.Default.prototype as any)._getIconUrl;
-			L.Icon.Default.mergeOptions({
+			delete leaflet.Icon.Default.prototype._getIconUrl;
+			leaflet.Icon.Default.mergeOptions({
 				iconRetinaUrl:
 					"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
 				iconUrl:
@@ -92,9 +103,9 @@ function MapPreviewContent() {
 					"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 			});
 
-			map = L.default.map(mapRef.current!).setView([40.7128, -74.006], 13);
+			map = leaflet.map(mapRef.current!).setView([40.7128, -74.006], 13);
 
-			L.default
+			leaflet
 				.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 					attribution: "&copy; OpenStreetMap contributors",
 				})
@@ -144,7 +155,7 @@ function MapPreviewContent() {
 
 				L.default
 					.marker([m.lat, m.lng], { icon })
-					.addTo(map)
+					.addTo(map!)
 					.bindPopup(m.title);
 			});
 		};
@@ -185,14 +196,17 @@ function MapFullContent() {
 	useEffect(() => {
 		if (!isClient || !mapWrapper.current) return;
 
-		let map: any = null;
+		let map: LeafletMapInstance | null = null;
 
 		const initializeMap = async () => {
-			const L = await import("leaflet");
+			const L = (await import(
+				"leaflet"
+			)) as unknown as LeafletModuleWithDefault;
+			const leaflet = L.default;
 
 			// Fix for default markers
-			delete (L.Icon.Default.prototype as any)._getIconUrl;
-			L.Icon.Default.mergeOptions({
+			delete leaflet.Icon.Default.prototype._getIconUrl;
+			leaflet.Icon.Default.mergeOptions({
 				iconRetinaUrl:
 					"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
 				iconUrl:
@@ -201,9 +215,9 @@ function MapFullContent() {
 					"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 			});
 
-			map = L.default.map(mapWrapper.current!).setView([40.7128, -74.006], 13);
+			map = leaflet.map(mapWrapper.current!).setView([40.7128, -74.006], 13);
 
-			L.default
+			leaflet
 				.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
 				.addTo(map);
 
@@ -240,7 +254,7 @@ function MapFullContent() {
 					html: `<div style="width:24px;height:24px;border-radius:12px;border:2px solid #fff;background:${color};"></div>`,
 					iconSize: [24, 24],
 				});
-				const marker = L.default.marker([m.lat, m.lng], { icon }).addTo(map);
+				const marker = L.default.marker([m.lat, m.lng], { icon }).addTo(map!);
 				marker.bindPopup(`
           <div style="margin:0.5rem 0;">
             <strong style="display:block">${m.title}</strong>
@@ -249,8 +263,10 @@ function MapFullContent() {
 			});
 
 			// Initialize feather icons
-			const feather = await import("feather-icons");
-			feather.replace();
+			const feather = (await import(
+				"feather-icons"
+			)) as unknown as FeatherIconsModuleWithDefault;
+			feather.default.replace();
 		};
 
 		initializeMap();
@@ -331,15 +347,18 @@ function ReportMapContent() {
 	useEffect(() => {
 		if (!isClient || !mapRef.current) return;
 
-		let map: any = null;
-		let marker: any = null;
+		let map: LeafletMapInstance | null = null;
+		let marker: LeafletMarkerInstance | null = null;
 
 		const initializeMap = async () => {
-			const L = await import("leaflet");
+			const L = (await import(
+				"leaflet"
+			)) as unknown as LeafletModuleWithDefault;
+			const leaflet = L.default;
 
 			// Fix for default markers
-			delete (L.Icon.Default.prototype as any)._getIconUrl;
-			L.Icon.Default.mergeOptions({
+			delete leaflet.Icon.Default.prototype._getIconUrl;
+			leaflet.Icon.Default.mergeOptions({
 				iconRetinaUrl:
 					"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
 				iconUrl:
@@ -348,9 +367,9 @@ function ReportMapContent() {
 					"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 			});
 
-			map = L.default.map(mapRef.current!).setView([40.7128, -74.006], 15);
+			map = leaflet.map(mapRef.current!).setView([40.7128, -74.006], 15);
 
-			L.default
+			leaflet
 				.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
 				.addTo(map);
 
@@ -358,8 +377,8 @@ function ReportMapContent() {
 				.marker([40.7128, -74.006], { draggable: true })
 				.addTo(map);
 
-			map.on("click", (e: any) => {
-				marker.setLatLng(e.latlng);
+			map.on("click", (e: LeafletEvent) => {
+				marker!.setLatLng([e.latlng.lat, e.latlng.lng]);
 			});
 		};
 
