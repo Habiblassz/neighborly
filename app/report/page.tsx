@@ -9,8 +9,14 @@ const MapForReport = dynamic(
 
 const Container = styled.div`
 	max-width: 56rem;
-	margin: 2rem auto;
+	margin: 0 auto;
 	padding: 1rem;
+	min-height: calc(100vh - 120px);
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding: 0.5rem;
+		margin: 0;
+	}
 `;
 
 const Card = styled.div`
@@ -18,85 +24,220 @@ const Card = styled.div`
 	border-radius: 12px;
 	box-shadow: 0 6px 20px rgba(16, 24, 40, 0.08);
 	padding: 1.5rem;
+	margin: 1rem 0;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding: 1rem;
+		margin: 0.5rem 0;
+		border-radius: 8px;
+		box-shadow: 0 2px 8px rgba(16, 24, 40, 0.08);
+	}
+`;
+
+const FormGroup = styled.div`
+	margin-bottom: 1.5rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-bottom: 1rem;
+	}
+`;
+
+const Label = styled.label`
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
+	color: ${({ theme }) => theme.colors.gray700};
+`;
+
+const Input = styled.input`
+	width: 100%;
+	padding: 0.75rem;
+	border-radius: 8px;
+	border: 1px solid ${({ theme }) => theme.colors.gray300};
+	font-size: 1rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding: 1rem;
+		font-size: 16px; /* Prevent zoom on iOS */
+	}
+`;
+
+const TextArea = styled.textarea`
+	width: 100%;
+	padding: 0.75rem;
+	border-radius: 8px;
+	border: 1px solid ${({ theme }) => theme.colors.gray300};
+	font-size: 1rem;
+	resize: vertical;
+	min-height: 120px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding: 1rem;
+		font-size: 16px;
+		min-height: 100px;
+	}
+`;
+
+const Select = styled.select`
+	width: 100%;
+	padding: 0.75rem;
+	border-radius: 8px;
+	border: 1px solid ${({ theme }) => theme.colors.gray300};
+	font-size: 1rem;
+	background: white;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding: 1rem;
+		font-size: 16px;
+	}
+`;
+
+const FileUploadArea = styled.div`
+	border: 2px dashed ${({ theme }) => theme.colors.gray300};
+	border-radius: 8px;
+	padding: 2rem;
+	text-align: center;
+	cursor: pointer;
+	transition: border-color 0.2s;
+
+	&:hover {
+		border-color: ${({ theme }) => theme.colors.blue600};
+	}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding: 1.5rem;
+	}
+`;
+
+const MapContainer = styled.div`
+	height: 300px;
+	border: 1px solid ${({ theme }) => theme.colors.gray300};
+	border-radius: 8px;
+	overflow: hidden;
+	margin-bottom: 0.5rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		height: 250px;
+	}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+		height: 200px;
+	}
+`;
+
+const ButtonGroup = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 2rem;
+	gap: 1rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		flex-direction: column-reverse;
+		margin-top: 1.5rem;
+		gap: 0.75rem;
+	}
+`;
+
+const Button = styled.button<{ $variant?: "primary" | "secondary" }>`
+	padding: 0.75rem 1.5rem;
+	border-radius: 8px;
+	font-weight: 500;
+	cursor: pointer;
+	border: none;
+	min-height: 44px;
+	min-width: 44px;
+	transition: all 0.2s;
+
+	${({ $variant, theme }) =>
+		$variant === "primary"
+			? `
+        background: ${theme.colors.blue600};
+        color: white;
+        
+        &:hover {
+          background: ${theme.colors.blue800};
+        }
+      `
+			: `
+        background: white;
+        color: ${theme.colors.gray700};
+        border: 1px solid ${theme.colors.gray300};
+        
+        &:hover {
+          background: ${theme.colors.gray50};
+        }
+      `}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		width: 100%;
+		padding: 1rem;
+	}
+`;
+
+const FormSection = styled.div`
+	border-top: 1px solid ${({ theme }) => theme.colors.gray300};
+	padding-top: 1.5rem;
+	display: grid;
+	gap: 1rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding-top: 1rem;
+		gap: 0.75rem;
+	}
 `;
 
 export default function ReportPage() {
 	return (
 		<Container>
 			<Card>
-				<h1 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+				<h1
+					style={{
+						fontSize: "1.5rem",
+						marginBottom: "1.5rem",
+						fontWeight: 600,
+					}}>
 					Report a Community Issue
 				</h1>
 				<form className="report-form" onSubmit={(e) => e.preventDefault()}>
-					<div style={{ marginBottom: "1rem" }}>
-						<label>Issue Title*</label>
-						<input
-							type="text"
-							placeholder="Brief description"
-							style={{
-								width: "100%",
-								padding: "0.5rem",
-								borderRadius: 8,
-								border: "1px solid #D1D5DB",
-							}}
-						/>
-					</div>
+					<FormGroup>
+						<Label>Issue Title*</Label>
+						<Input type="text" placeholder="Brief description of the issue" />
+					</FormGroup>
 
-					<div style={{ marginBottom: "1rem" }}>
-						<label>Category*</label>
-						<select
-							style={{
-								width: "100%",
-								padding: "0.5rem",
-								borderRadius: 8,
-								border: "1px solid #D1D5DB",
-							}}>
+					<FormGroup>
+						<Label>Category*</Label>
+						<Select>
 							<option value="">Select a category</option>
 							<option value="pothole">Pothole</option>
 							<option value="streetlight">Streetlight</option>
 							<option value="waste">Waste Management</option>
 							<option value="other">Other</option>
-						</select>
-					</div>
+						</Select>
+					</FormGroup>
 
-					<div style={{ marginBottom: "1rem" }}>
-						<label>Description*</label>
-						<textarea
-							rows={4}
-							style={{
-								width: "100%",
-								padding: "0.5rem",
-								borderRadius: 8,
-								border: "1px solid #D1D5DB",
-							}}
-						/>
-					</div>
+					<FormGroup>
+						<Label>Description*</Label>
+						<TextArea placeholder="Please provide detailed information about the issue..." />
+					</FormGroup>
 
-					<div style={{ marginBottom: "1rem" }}>
-						<label>Upload Photos (Optional)</label>
-						<div
-							style={{
-								border: "2px dashed #D1D5DB",
-								borderRadius: 8,
-								padding: "1rem",
-								textAlign: "center",
-							}}>
+					<FormGroup>
+						<Label>Upload Photos (Optional)</Label>
+						<FileUploadArea>
 							<p>Drag and drop photos here, or click to browse</p>
-							<input type="file" className="hidden" multiple accept="image/*" />
-						</div>
-					</div>
+							<input
+								type="file"
+								style={{ display: "none" }}
+								multiple
+								accept="image/*"
+							/>
+						</FileUploadArea>
+					</FormGroup>
 
-					<div style={{ marginBottom: "1rem" }}>
-						<label>Location*</label>
-						<div
-							style={{
-								height: 256,
-								border: "1px solid #D1D5DB",
-								borderRadius: 8,
-								overflow: "hidden",
-							}}>
+					<FormGroup>
+						<Label>Location*</Label>
+						<MapContainer>
 							<MapForReport />
-						</div>
+						</MapContainer>
 						<button
 							type="button"
 							style={{
@@ -104,72 +245,34 @@ export default function ReportPage() {
 								color: "#2563EB",
 								background: "transparent",
 								border: "none",
+								cursor: "pointer",
+								fontSize: "0.875rem",
+								minHeight: "auto",
+								padding: 0,
 							}}>
 							Use my current location
 						</button>
-					</div>
+					</FormGroup>
 
-					<div
-						style={{
-							borderTop: "1px solid #E5E7EB",
-							paddingTop: "1rem",
-							display: "grid",
-							gap: 12,
-						}}>
-						<div>
-							<label>Name*</label>
-							<input
-								type="text"
-								style={{
-									width: "100%",
-									padding: "0.5rem",
-									borderRadius: 8,
-									border: "1px solid #D1D5DB",
-								}}
-							/>
-						</div>
-						<div>
-							<label>Email*</label>
-							<input
-								type="email"
-								style={{
-									width: "100%",
-									padding: "0.5rem",
-									borderRadius: 8,
-									border: "1px solid #D1D5DB",
-								}}
-							/>
-						</div>
-					</div>
+					<FormSection>
+						<FormGroup>
+							<Label>Name*</Label>
+							<Input type="text" />
+						</FormGroup>
+						<FormGroup>
+							<Label>Email*</Label>
+							<Input type="email" />
+						</FormGroup>
+					</FormSection>
 
-					<div
-						style={{
-							display: "flex",
-							justifyContent: "flex-end",
-							marginTop: "1rem",
-						}}>
-						<button
-							type="button"
-							style={{
-								marginRight: 8,
-								padding: "0.5rem 1rem",
-								borderRadius: 8,
-								border: "1px solid #D1D5DB",
-							}}>
+					<ButtonGroup>
+						<Button type="button" $variant="secondary">
 							Cancel
-						</button>
-						<button
-							type="submit"
-							style={{
-								background: "#2563EB",
-								color: "#fff",
-								padding: "0.5rem 1rem",
-								borderRadius: 8,
-								border: "none",
-							}}>
+						</Button>
+						<Button type="submit" $variant="primary">
 							Submit Report
-						</button>
-					</div>
+						</Button>
+					</ButtonGroup>
 				</form>
 			</Card>
 		</Container>

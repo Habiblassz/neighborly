@@ -6,23 +6,124 @@ import styled from "styled-components";
 const Foot = styled.footer`
 	background: #111827;
 	color: #fff;
-	padding: 3rem 1rem;
+	padding: 2rem 1rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		padding: 1.5rem 1rem;
+	}
 `;
 
 const Container = styled.div`
 	max-width: ${(p) => p.theme.sizes.maxWidth};
 	margin: 0 auto;
 	display: grid;
-	grid-template-columns: repeat(1, 1fr);
-	gap: 1rem;
-	@media (min-width: 768px) {
+	grid-template-columns: 1fr;
+	gap: 2rem;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		grid-template-columns: repeat(4, 1fr);
+		gap: 1.5rem;
+	}
+`;
+
+const BrandSection = styled.div`
+	@media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+		grid-column: 1 / -1;
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+		grid-column: auto;
+	}
+`;
+
+const Brand = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0.75rem;
+	font-weight: 700;
+	font-size: 1.125rem;
+`;
+
+const BrandDescription = styled.p`
+	color: #9ca3af;
+	line-height: 1.6;
+	font-size: 0.9rem;
+`;
+
+const Column = styled.div`
+	@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+		text-align: center;
 	}
 `;
 
 const ColumnTitle = styled.h4`
-	font-weight: 700;
+	font-weight: 600;
+	margin-bottom: 0.75rem;
+	font-size: 1rem;
+`;
+
+const LinkList = styled.ul`
+	color: #9ca3af;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 0.9rem;
+`;
+
+const LinkItem = styled.li`
 	margin-bottom: 0.5rem;
+	cursor: pointer;
+	transition: color 0.2s;
+
+	&:hover {
+		color: #fff;
+	}
+`;
+
+const SocialLinks = styled.div`
+	display: flex;
+	gap: 1rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+		justify-content: center;
+	}
+`;
+
+const SocialLink = styled.a`
+	color: #9ca3af;
+	transition: color 0.2s;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.05);
+
+	&:hover {
+		color: #fff;
+		background: rgba(255, 255, 255, 0.1);
+	}
+`;
+
+const Copyright = styled.div`
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	margin-top: 2rem;
+	padding-top: 1rem;
+	text-align: center;
+	color: #9ca3af;
+	font-size: 0.85rem;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-top: 1.5rem;
+		padding-top: 0.75rem;
+	}
 `;
 
 export default function Footer() {
@@ -33,72 +134,59 @@ export default function Footer() {
 	return (
 		<Foot>
 			<Container>
-				<div>
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							gap: 8,
-							marginBottom: 8,
-						}}>
+				<BrandSection>
+					<Brand>
 						<i data-feather="alert-circle" />
-						<div style={{ fontWeight: 700, fontSize: 18 }}>CivicConnect</div>
-					</div>
-					<p style={{ color: "#9CA3AF" }}>
+						<div>CivicConnect</div>
+					</Brand>
+					<BrandDescription>
 						Empowering communities through collaborative issue reporting and
 						resolution.
-					</p>
-				</div>
+					</BrandDescription>
+				</BrandSection>
 
-				<div>
+				<Column>
 					<ColumnTitle>Quick Links</ColumnTitle>
-					<ul style={{ color: "#9CA3AF", listStyle: "none", padding: 0 }}>
-						<li>Report Issue</li>
-						<li>Browse Map</li>
-						<li>Community</li>
-						<li>Dashboard</li>
-					</ul>
-				</div>
+					<LinkList>
+						<LinkItem>Report Issue</LinkItem>
+						<LinkItem>Browse Map</LinkItem>
+						<LinkItem>Community</LinkItem>
+						<LinkItem>Dashboard</LinkItem>
+					</LinkList>
+				</Column>
 
-				<div>
+				<Column>
 					<ColumnTitle>Support</ColumnTitle>
-					<ul style={{ color: "#9CA3AF", listStyle: "none", padding: 0 }}>
-						<li>Help Center</li>
-						<li>Contact Us</li>
-						<li>Privacy Policy</li>
-						<li>Terms of Service</li>
-					</ul>
-				</div>
+					<LinkList>
+						<LinkItem>Help Center</LinkItem>
+						<LinkItem>Contact Us</LinkItem>
+						<LinkItem>Privacy Policy</LinkItem>
+						<LinkItem>Terms of Service</LinkItem>
+					</LinkList>
+				</Column>
 
-				<div>
+				<Column>
 					<ColumnTitle>Stay Connected</ColumnTitle>
-					<div style={{ display: "flex", gap: 12 }}>
-						<a>
+					<SocialLinks>
+						<SocialLink>
 							<i data-feather="facebook" />
-						</a>
-						<a>
+						</SocialLink>
+						<SocialLink>
 							<i data-feather="twitter" />
-						</a>
-						<a>
+						</SocialLink>
+						<SocialLink>
 							<i data-feather="instagram" />
-						</a>
-						<a>
+						</SocialLink>
+						<SocialLink>
 							<i data-feather="linkedin" />
-						</a>
-					</div>
-				</div>
+						</SocialLink>
+					</SocialLinks>
+				</Column>
 			</Container>
 
-			<div
-				style={{
-					borderTop: "1px solid rgba(255,255,255,0.08)",
-					marginTop: 24,
-					paddingTop: 16,
-					textAlign: "center",
-					color: "#9CA3AF",
-				}}>
+			<Copyright>
 				<p>© 2025 CivicConnect. All rights reserved.</p>
-			</div>
+			</Copyright>
 		</Foot>
 	);
 }

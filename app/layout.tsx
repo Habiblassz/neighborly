@@ -7,7 +7,6 @@ import "aos/dist/aos";
 export const metadata = {
 	title: "Neighbourly - Community Issue Reporting",
 	description: "Report. Track. Resolve.",
-	icon: "",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -16,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 			<body>
 				<Providers>
 					<Header />
-					<main>{children}</main>
+					<main style={{ minHeight: "calc(100vh - 120px)" }}>{children}</main>
 					<Footer />
 				</Providers>
 			</body>

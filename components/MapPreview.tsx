@@ -33,6 +33,14 @@ const Card = styled.div`
 const MapContainer = styled.div`
 	width: 100%;
 	height: 384px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		height: 300px;
+	}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+		height: 250px;
+	}
 `;
 
 const CardBody = styled.div`

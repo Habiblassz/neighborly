@@ -12,6 +12,24 @@ const theme = {
 	sizes: {
 		maxWidth: "1120px",
 	},
+	// Add breakpoints for responsive design
+	breakpoints: {
+		xs: "320px",
+		sm: "640px",
+		md: "768px",
+		lg: "1024px",
+		xl: "1280px",
+		xxl: "1536px",
+	},
+	// Add spacing scale
+	spacing: {
+		xs: "0.5rem",
+		sm: "1rem",
+		md: "1.5rem",
+		lg: "2rem",
+		xl: "3rem",
+		xxl: "4rem",
+	},
 };
 
 export type Theme = typeof theme;
